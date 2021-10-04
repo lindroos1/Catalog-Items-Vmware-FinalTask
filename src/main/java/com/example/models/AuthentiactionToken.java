@@ -2,8 +2,13 @@ package com.example.models;
 
 import java.io.Serializable;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class AuthentiactionToken implements Serializable  {
 
+	
+	private static final long serialVersionUID = 1L;
 	private String access_token;
 
 	public String getAccess_token() {
