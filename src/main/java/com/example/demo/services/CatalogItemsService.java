@@ -5,8 +5,10 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.GsonFactoryBean;
@@ -16,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.models.AuthentiactionToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -42,13 +45,11 @@ public class CatalogItemsService {
 			 map.add("refresh_token", "JmPWxHtG3swG2kcenPoXj7ihABLLINs3JCNUz27nyxrMXViP4Tbrm0PBaToiA8Tf");
 			 HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 			
-			 ResponseEntity<String> response = restTemplate.postForEntity(
+			 AuthentiactionToken authentiactionToken = restTemplate.postForObject(
 					  "https://console-stg.cloud.vmware.com/csp/gateway/am/api/auth/api-tokens/authorize",
-					  request, String.class);
+					  request, AuthentiactionToken.class);
 			 
-		   // var authToken = new Gson().toJson(response, JsonObject.class);
-			//authToken = new Gson().fromJson("access_token", null);
-			return response.getBody();
+			return authentiactionToken.getAccess_token();
 		}
 	
 		
@@ -57,15 +58,14 @@ public class CatalogItemsService {
 		public String getCatalogItems() {
 			var authToken = getAuthToken();
 		   
-			HttpHeaders headers = new HttpHeaders();
-			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-			headers.add("Authorization", "Bearer" + authToken);
+			HttpHeaders headerss = new HttpHeaders();
+			headerss.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			headerss.set("Authorization", "Bearer " + authToken);
 
-			HttpEntity<String> entity = new HttpEntity<>(" ", headers);
-
-			//restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-			return restTemplate.getForEntity("https://api.staging.symphony-dev.com/catalog/api/items",
-					String.class, headers).getBody();
+			HttpEntity<String> entity = new HttpEntity<>(headerss);
+			
+			return restTemplate.exchange("https://api.staging.symphony-dev.com/catalog/api/items"
+					,HttpMethod.GET, entity, String.class).getBody();
 		}
 		//return the JSON
 }

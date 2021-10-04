@@ -21,6 +21,7 @@ public class Contrroller {
 	
 	@GetMapping("/")
 	public String getItems() {
-		return s.getAuthToken();
+		
+		 return s.getCatalogItems();
 	}
 }
