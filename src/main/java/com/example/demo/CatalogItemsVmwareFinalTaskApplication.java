@@ -12,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.services.AuthenticationTokenService;
 import com.example.models.AuthentiactionToken;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootApplication
 public class CatalogItemsVmwareFinalTaskApplication {
