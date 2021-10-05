@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.demo.services.AuthenticationTokenService;
 import com.example.models.AuthentiactionToken;
 
 @SpringBootApplication
@@ -27,10 +28,5 @@ public class CatalogItemsVmwareFinalTaskApplication {
 	 @Bean
 	 public HttpHeaders httpHeaders() {
 		 return new HttpHeaders();
-	 }
-	
-	 @Bean
-	 public AuthentiactionToken authentiactionToken() {
-		 return new AuthentiactionToken();
 	 }
 }

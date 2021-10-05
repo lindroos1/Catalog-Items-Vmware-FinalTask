@@ -28,41 +28,30 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.models.AuthentiactionToken;
+import com.google.gson.JsonObject;
 
 @Service
 public class CatalogItemsService {
 
 	private RestTemplate restTemplate;
 	private HttpHeaders headers;
-	private MultiValueMap<String, String> map;
-	private AuthentiactionToken authentiactionToken;
-
+	private AuthenticationTokenService authTokenService;
+	
 	@Autowired
-	public CatalogItemsService(RestTemplate restTemplate, HttpHeaders headers, MultiValueMap<String, String> map,
-			AuthentiactionToken authentiactionToken) {
+	public CatalogItemsService(RestTemplate restTemplate, HttpHeaders headers,
+			AuthenticationTokenService authTokenService) {
 		this.restTemplate = restTemplate;
 		this.headers = headers;
-		this.map = map;
-		this.authentiactionToken = authentiactionToken;
+		this.authTokenService = authTokenService;
 	}
 
 	// get auth token
-	@ResponseBody
-	public String getAuthToken() throws  RestClientException{
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		map.add("refresh_token", "JmPWxHtG3swG2kcenPoXj7ihABLLINs3JCNUz27nyxrMXViP4Tbrm0PBaToiA8Tf");
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-
-		authentiactionToken = restTemplate.postForObject(
-				"https://console-stg.cloud.vmware.com/csp/gateway/am/api/auth/api-tokens/authorize", request,
-				AuthentiactionToken.class);
-		return authentiactionToken.getAccess_token();
-	}
+	
 
 	// use the auth token to get the JSON
 	@ResponseBody
 	public String getCatalog(String url) throws RestClientException {
-		var authToken = getAuthToken();
+		var authToken = authTokenService.getAuthToken();
 
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.set("Authorization", "Bearer " + authToken);
