@@ -2,6 +2,7 @@
 
 
 import java.util.Collections;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
@@ -27,11 +28,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.models.AuthentiactionToken;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import ch.qos.logback.classic.Logger;
 
 @Service
 public class CatalogItemsService {
@@ -39,7 +35,7 @@ public class CatalogItemsService {
 	private RestTemplate restTemplate;
 	private HttpHeaders headers;
 	private MultiValueMap<String, String> map;
-	AuthentiactionToken authentiactionToken;
+	private AuthentiactionToken authentiactionToken;
 
 	@Autowired
 	public CatalogItemsService(RestTemplate restTemplate, HttpHeaders headers, MultiValueMap<String, String> map,
@@ -52,8 +48,7 @@ public class CatalogItemsService {
 
 	// get auth token
 	@ResponseBody
-	private String getAuthToken() throws  RestClientException{
-
+	public String getAuthToken() throws  RestClientException{
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		map.add("refresh_token", "JmPWxHtG3swG2kcenPoXj7ihABLLINs3JCNUz27nyxrMXViP4Tbrm0PBaToiA8Tf");
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
@@ -66,16 +61,17 @@ public class CatalogItemsService {
 
 	// use the auth token to get the JSON
 	@ResponseBody
-	public String getCatalogItems() throws RestClientException {
+	public String getCatalog(String url) throws RestClientException {
 		var authToken = getAuthToken();
 
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.set("Authorization", "Bearer " + authToken);
 
 		HttpEntity<String> entity = new HttpEntity<>(headers);
-
-		return restTemplate.exchange("https://api.staging.symphony-dev.com/catalog/api/items", HttpMethod.GET, entity,
+		return restTemplate.exchange(url, HttpMethod.GET, entity,
 				String.class).getBody();
 	}
 		//return the JSON
+	
+
 }
