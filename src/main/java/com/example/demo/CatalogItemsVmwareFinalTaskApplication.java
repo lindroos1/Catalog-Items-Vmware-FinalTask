@@ -4,16 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.services.AuthenticationTokenService;
-import com.example.models.AuthentiactionToken;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.demo.entity.HttpCustomEntity;
 
 @SpringBootApplication
 public class CatalogItemsVmwareFinalTaskApplication {
@@ -24,11 +18,12 @@ public class CatalogItemsVmwareFinalTaskApplication {
 	
 	 @Bean
 	    public RestTemplate restTemplate() {
-	        return new RestTemplate();
+		  return new RestTemplate();
 	    }
-	 
 	 @Bean
 	 public HttpHeaders httpHeaders() {
 		 return new HttpHeaders();
 	 }
+	 
+
 }
