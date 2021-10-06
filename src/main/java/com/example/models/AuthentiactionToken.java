@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 import org.springframework.stereotype.Repository;
 
-
+@Repository
 public class AuthentiactionToken implements Serializable  {
 
-	private String access_token;
+	private String token;
 
-	public String getAccess_token() {
-		return access_token;
+	public String getToken() {
+		return token;
 	}
 
-	public void setAccess_token(String access_token) {
-		this.access_token = access_token;
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 }
