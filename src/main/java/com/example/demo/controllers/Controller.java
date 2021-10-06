@@ -25,9 +25,9 @@ public class Controller {
 	CatalogItemsService s;
 	
 	@GetMapping("/getAllItems")
-	public CatalogItemsList getItems() throws RestClientException {
+	public List<CatalogItems> getItems() throws RestClientException {
 		 String url = "https://api.staging.symphony-dev.com/catalog/api/items";
-		 return s.getCatalog(url);
+		 return s.getCatalog(url).getContent();
 	}
 			
 	@GetMapping("getSpecificItem")

@@ -12,12 +12,12 @@ public class CatalogItemsList {
 		return content;
 	}
 
-	public void setContent(ArrayList<CatalogItems> content) {
+	public void setContent(List<CatalogItems> content) {
 		this.content = content;
 	}
 
 	public void setCatalogItems(CatalogItems c) {
 		content.add(c);
 	}
-	
+		
 }
