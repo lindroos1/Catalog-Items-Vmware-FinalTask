@@ -28,9 +28,10 @@ class CatalogItemsVmwareFinalTaskApplicationTests {
 	
 
 	@Test
-	public void greetingShouldReturnDefaultMessage() throws Exception {
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/",
+	public void shouldReturnAllItems() throws Exception {
+		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/getAllItems",
 				String.class)).contains("id", "content");
 	}
+	
 
 }

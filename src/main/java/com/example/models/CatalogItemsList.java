@@ -20,7 +20,4 @@ public class CatalogItemsList {
 		content.add(c);
 	}
 	
-	public  List<CatalogItems> getCatalogItems() {
-		return content;
-	}
 }

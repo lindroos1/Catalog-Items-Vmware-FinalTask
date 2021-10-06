@@ -12,6 +12,7 @@ public class CatalogItems {
 	String lastUpdatedAt;
 	String lastUpdatedBy;
 	
+	
 	public String getId() {
 		return id;
 	}
