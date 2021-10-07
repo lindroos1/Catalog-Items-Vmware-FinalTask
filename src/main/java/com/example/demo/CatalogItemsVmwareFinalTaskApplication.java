@@ -7,7 +7,9 @@ import org.springframework.http.HttpHeaders;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.entity.HttpCustomEntity;
+import com.example.demo.entity.HttpCustomHeaders;
+import com.example.demo.entity.HttpGetEntity;
+import com.example.demo.entity.HttpPostEntity;
 
 @SpringBootApplication
 public class CatalogItemsVmwareFinalTaskApplication {
@@ -25,5 +27,14 @@ public class CatalogItemsVmwareFinalTaskApplication {
 		 return new HttpHeaders();
 	 }
 	 
+	 @Bean
+	 public HttpGetEntity httpGetEntity() {
+		 return new HttpGetEntity();
+	 }
+	 
+	 @Bean
+	 public HttpPostEntity httpPostEntity() {
+		 return new HttpPostEntity();
+	 }
 
 }
