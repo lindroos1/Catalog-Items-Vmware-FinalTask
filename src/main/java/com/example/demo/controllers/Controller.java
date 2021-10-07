@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
@@ -34,6 +35,11 @@ public class Controller {
 	public CatalogItems getSpecificItem(@RequestParam String itemId) {
 		String url = "https://api.staging.symphony-dev.com/catalog/api/items/" + itemId;
 		return  s.getSingleCatalog(url);
+	}
+	
+	@PostMapping("/postItem")
+	public String postItem() {
+		return "successfull";
 	}
 
 }

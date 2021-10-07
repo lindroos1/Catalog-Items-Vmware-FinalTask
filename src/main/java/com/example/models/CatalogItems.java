@@ -11,8 +11,15 @@ public class CatalogItems {
 	String createdBy;
 	String lastUpdatedAt;
 	String lastUpdatedBy;
+	String[] projectIds;
 	
 	
+	public String[] getProjectIds() {
+		return projectIds;
+	}
+	public void setProjectIds(String[] projectIds) {
+		this.projectIds = projectIds;
+	}
 	public String getId() {
 		return id;
 	}
