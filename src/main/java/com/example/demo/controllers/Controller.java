@@ -38,8 +38,9 @@ public class Controller {
 	}
 	
 	@PostMapping("/postItem")
-	public String postItem() {
-		return "successfull";
+	public String postItem(@RequestParam String Id, @RequestParam String projectId ) {
+		String url = "https://api.staging.symphony-dev.com/catalog/api/items/" + Id + "/request";
+		 return s.PostCatalogItems(url, projectId);
 	}
 
 }
