@@ -24,6 +24,7 @@ import com.example.demo.entity.HttpPostEntity;
 import com.example.helpers.JsonInputHelper;
 import com.example.models.CatalogItems;
 import com.example.models.CatalogItemsList;
+import com.example.models.Schema;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
@@ -36,6 +37,7 @@ public class CatalogItemsService {
 	private HttpCustomHeaders customHeaders;
 	private HttpGetEntity getEntity;
 	private HttpPostEntity postEntity;
+	private Schema schema = new Schema();
 	
 	@Autowired
 	public CatalogItemsService(RestTemplate restTemplate, HttpCustomHeaders customHeaders,
@@ -58,6 +60,15 @@ public class CatalogItemsService {
 		getEntity.setHeaders(customHeaders);
 		  var ans = restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(),
 				CatalogItems.class).getBody();
+		  
+		  
+		  int len = ans.getSchema().getRequired().length;
+		  String[] str = new String[len];
+		  this.schema.setRequired(str);
+		  
+		 for(int c = 0; c < ans.getSchema().getRequired().length; c++) {
+			this.schema.getRequired()[c] = ans.getSchema().getRequired()[c];
+		 }
 		 
 		 String[] possibleInputs ={"array", "integer", "number", "object", "string", "boolean", "password"};
 		 if(ans.getSchema().getRequired().length>0) {
@@ -77,7 +88,7 @@ public class CatalogItemsService {
 	@ResponseBody
 	public String postCatalogItems(String url, CatalogItems catalogItems) throws RestClientException{
 				JsonInputHelper jsonInputHelper = new JsonInputHelper(catalogItems.getInput(),
-						catalogItems);
+						catalogItems, schema);
 				postEntity.setHeaders(customHeaders);
 				
 				JsonObject body = new JsonObject();
