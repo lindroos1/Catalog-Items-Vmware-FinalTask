@@ -21,8 +21,11 @@ import org.springframework.web.client.RestTemplate;
 import com.example.demo.entity.HttpCustomHeaders;
 import com.example.demo.entity.HttpGetEntity;
 import com.example.demo.entity.HttpPostEntity;
+import com.example.helpers.JsonInputHelper;
 import com.example.models.CatalogItems;
 import com.example.models.CatalogItemsList;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -52,26 +55,39 @@ public class CatalogItemsService {
 	
 	@ResponseBody
 	public CatalogItems getSingleCatalog(String url) throws RestClientException {
-			
-		
-		return restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(),
+		getEntity.setHeaders(customHeaders);
+		  var ans = restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(),
 				CatalogItems.class).getBody();
-	}
-	
-	@ResponseBody
-	public String PostCatalogItems(String url, String projectId) throws RestClientException {
-		
-				JsonObject object = new JsonObject();
-				JsonObject object1 = new JsonObject();
-				object.addProperty("bulkRequestCount",1);
-				object.addProperty("deploymentName","send from Spring");
-				object.add("inputs", object1);
-				object.addProperty("projectId", projectId);
-				object.addProperty("reason", "");
-				object.addProperty("version", "");
+		 
+		 String[] possibleInputs ={"array", "integer", "number", "object", "string", "boolean", "password"};
+		 if(ans.getSchema().getRequired().length>0) {
+			 for(int i = 0; i < ans.getSchema().getRequired().length; i++) {
+				 for(int b = 0; b < possibleInputs.length; b++) {
+					 if(ans.getSchema().getRequired()[i].toLowerCase().contains(possibleInputs[b])) {
+						 var newValue = possibleInputs[b];
+						 ans.getSchema().getRequired()[i] = newValue;
+					 }
+				 }
 				
+			 }
+		 }
+		
+		 return ans;
+	}	
+	@ResponseBody
+	public String postCatalogItems(String url, CatalogItems catalogItems) throws RestClientException{
+				JsonInputHelper jsonInputHelper = new JsonInputHelper(catalogItems.getInput(),
+						catalogItems);
 				postEntity.setHeaders(customHeaders);
-				postEntity.setBody(object);
+				
+				JsonObject body = new JsonObject();
+				body.addProperty("bulkRequestCount",1);
+				body.addProperty("deploymentName",catalogItems.getInput().getDeploymentName());
+				body.add("inputs", jsonInputHelper.getJsonInput());
+				body.addProperty("projectId", catalogItems.getProjectIds()[0]);
+				body.addProperty("reason","");
+				body.addProperty("version","");
+				postEntity.setBody(body);
 				
 			return restTemplate.exchange(url, HttpMethod.POST, postEntity.getEntity(),
 				String.class).getBody();

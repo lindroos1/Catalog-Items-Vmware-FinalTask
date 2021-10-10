@@ -1,24 +1,38 @@
 package com.example.models;
 
-
+import java.util.List;
 
 public class CatalogItems {
 
 	String id;
 	String name;
 	String description;
-	String createdAt;
-	String createdBy;
-	String lastUpdatedAt;
-	String lastUpdatedBy;
+	//String createdAt;
+	//String createdBy;
+	//String lastUpdatedAt;
+	//String lastUpdatedBy;
+	Schema Schema;
 	String[] projectIds;
+	Input input;
+
 	
-	
+	public Input getInput() {
+		return input;
+	}
+	public void setInput(Input input) {
+		this.input = input;
+	}
 	public String[] getProjectIds() {
 		return projectIds;
 	}
 	public void setProjectIds(String[] projectIds) {
 		this.projectIds = projectIds;
+	}
+	public Schema getSchema() {
+		return Schema;
+	}
+	public void setSchema(Schema schema) {
+		Schema = schema;
 	}
 	public String getId() {
 		return id;
@@ -37,30 +51,6 @@ public class CatalogItems {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public String getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(String createdAt) {
-		this.createdAt = createdAt;
-	}
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-	public String getLastUpdatedAt() {
-		return lastUpdatedAt;
-	}
-	public void setLastUpdatedAt(String lastUpdatedAt) {
-		this.lastUpdatedAt = lastUpdatedAt;
-	}
-	public String getLastUpdatedBy() {
-		return lastUpdatedBy;
-	}
-	public void setLastUpdatedBy(String lastUpdatedBy) {
-		this.lastUpdatedBy = lastUpdatedBy;
 	}
 	
 }
