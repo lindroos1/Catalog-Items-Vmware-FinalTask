@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import com.example.demo.entity.HttpCustomHeaders;
 import com.example.demo.entity.HttpGetEntity;
 import com.example.demo.entity.HttpPostEntity;
+import com.example.helpers.InputConverter;
 import com.example.helpers.JsonInputHelper;
 import com.example.models.CatalogItems;
 import com.example.models.CatalogItemsList;
@@ -61,28 +62,10 @@ public class CatalogItemsService {
 		  var ans = restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(),
 				CatalogItems.class).getBody();
 		  
-		  
-		  int len = ans.getSchema().getRequired().length;
-		  String[] str = new String[len];
-		  this.schema.setRequired(str);
-		  
-		 for(int c = 0; c < ans.getSchema().getRequired().length; c++) {
-			this.schema.getRequired()[c] = ans.getSchema().getRequired()[c];
-		 }
+		this.schema.setRequired(InputConverter.setSchema(this.schema.getRequired()
+				, ans.getSchema().getRequired()));
 		 
-		 String[] possibleInputs ={"array", "integer", "number", "object", "string", "boolean", "password"};
-		 if(ans.getSchema().getRequired().length>0) {
-			 for(int i = 0; i < ans.getSchema().getRequired().length; i++) {
-				 for(int b = 0; b < possibleInputs.length; b++) {
-					 if(ans.getSchema().getRequired()[i].toLowerCase().contains(possibleInputs[b])) {
-						 var newValue = possibleInputs[b];
-						 ans.getSchema().getRequired()[i] = newValue;
-					 }
-				 }
-				
-			 }
-		 }
-		
+		 ans.getSchema().setRequired(InputConverter.convertFromUnright(ans.getSchema().getRequired()));
 		 return ans;
 	}	
 	@ResponseBody
