@@ -2,16 +2,15 @@
 
 
 
-import java.util.Collections;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,13 +21,11 @@ import com.example.demo.entity.HttpCustomHeaders;
 import com.example.demo.entity.HttpGetEntity;
 import com.example.demo.entity.HttpPostEntity;
 import com.example.helpers.InputConverter;
-import com.example.helpers.JsonInputHelper;
 import com.example.models.CatalogItems;
 import com.example.models.CatalogItemsList;
-import com.example.models.Schema;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonElement;
+import com.example.models.Deployment;
+import com.example.models.DeploymentsList;
+import com.example.models.VersionsList;
 import com.google.gson.JsonObject;
 
 @Service
@@ -38,7 +35,6 @@ public class CatalogItemsService {
 	private HttpCustomHeaders customHeaders;
 	private HttpGetEntity getEntity;
 	private HttpPostEntity postEntity;
-	private Schema schema = new Schema();
 	
 	@Autowired
 	public CatalogItemsService(RestTemplate restTemplate, HttpCustomHeaders customHeaders,
@@ -62,29 +58,49 @@ public class CatalogItemsService {
 		  var ans = restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(),
 				CatalogItems.class).getBody();
 		  
-		this.schema.setRequired(InputConverter.setSchema(this.schema.getRequired()
-				, ans.getSchema().getRequired()));
-		 
-		 ans.getSchema().setRequired(InputConverter.convertFromUnright(ans.getSchema().getRequired()));
 		 return ans;
 	}	
+	
+	
 	@ResponseBody
 	public String postCatalogItems(String url, CatalogItems catalogItems) throws RestClientException{
-				JsonInputHelper jsonInputHelper = new JsonInputHelper(catalogItems.getInput(),
-						catalogItems, schema);
-				postEntity.setHeaders(customHeaders);
-				
-				JsonObject body = new JsonObject();
-				body.addProperty("bulkRequestCount",1);
-				body.addProperty("deploymentName",catalogItems.getInput().getDeploymentName());
-				body.add("inputs", jsonInputHelper.getJsonInput());
-				body.addProperty("projectId", catalogItems.getProjectIds()[0]);
-				body.addProperty("reason","");
-				body.addProperty("version","");
-				postEntity.setBody(body);
-				
-			return restTemplate.exchange(url, HttpMethod.POST, postEntity.getEntity(),
-				String.class).getBody();
+		/*
+		 * JsonInputHelper jsonInputHelper = new
+		 * JsonInputHelper(catalogItems.getInput(), catalogItems, schema);
+		 * postEntity.setHeaders(customHeaders);
+		 * 
+		 * JsonObject body = new JsonObject(); body.addProperty("bulkRequestCount",1);
+		 * body.addProperty("deploymentName",catalogItems.getInput().getDeploymentName()
+		 * ); body.add("inputs", jsonInputHelper.getJsonInput());
+		 * body.addProperty("projectId", catalogItems.getProjectIds()[0]);
+		 * body.addProperty("reason",""); body.addProperty("version","");
+		 * postEntity.setBody(body);
+		 * 
+		 * return restTemplate.exchange(url, HttpMethod.POST, postEntity.getEntity(),
+		 * String.class).getBody();
+		 */
+		return "whatever"; 
 	}
 	
+	@ResponseBody
+	public ResponseEntity<String> getimage(String url) {
+		getEntity.setHeaders(customHeaders);
+		
+		HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.valueOf("image/svg+xml"));
+	    var exchange = restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(), String.class).getBody();
+		return  new ResponseEntity<String>( exchange, headers, HttpStatus.OK);
+	}
+	
+	public DeploymentsList getDeployment(String url ) {
+		getEntity.setHeaders(customHeaders);
+		return restTemplate.exchange(url, HttpMethod.GET ,getEntity.getEntity(),
+				DeploymentsList.class).getBody();
+	}
+	
+	public VersionsList getVersions(String url) {
+		getEntity.setHeaders(customHeaders);
+		return restTemplate.exchange(url, HttpMethod.GET ,getEntity.getEntity(),
+				VersionsList.class).getBody();
+	}
 }

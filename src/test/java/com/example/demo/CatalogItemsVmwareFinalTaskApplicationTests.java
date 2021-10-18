@@ -30,7 +30,7 @@ class CatalogItemsVmwareFinalTaskApplicationTests {
 	@Test
 	public void shouldReturnAllItems() throws Exception {
 		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/getAllItems",
-				String.class)).contains("id", "content");
+				String.class)).contains("id");
 	}
 	
 

@@ -7,33 +7,30 @@ public class CatalogItems {
 	String id;
 	String name;
 	String description;
-	//String createdAt;
-	//String createdBy;
-	//String lastUpdatedAt;
-	//String lastUpdatedBy;
-	Schema Schema;
-	String[] projectIds;
-	Input input;
+	Type type;
+	String iconId;
+	Projects[] projects;
 
 	
-	public Input getInput() {
-		return input;
+	public Projects[] getProjects() {
+		return projects;
 	}
-	public void setInput(Input input) {
-		this.input = input;
+	public void setProjects(Projects[] projects) {
+		this.projects = projects;
 	}
-	public String[] getProjectIds() {
-		return projectIds;
+	public String getIconId() {
+		return iconId;
 	}
-	public void setProjectIds(String[] projectIds) {
-		this.projectIds = projectIds;
+	public void setIconId(String iconId) {
+		this.iconId = iconId;
 	}
-	public Schema getSchema() {
-		return Schema;
+	public Type getType() {
+		return type;
 	}
-	public void setSchema(Schema schema) {
-		Schema = schema;
+	public void setType(Type type) {
+		this.type = type;
 	}
+	
 	public String getId() {
 		return id;
 	}
