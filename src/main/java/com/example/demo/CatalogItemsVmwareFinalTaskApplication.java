@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import com.example.demo.entity.HttpCustomHeaders;
 import com.example.demo.entity.HttpGetEntity;
 import com.example.demo.entity.HttpPostEntity;
+import com.example.demo.services.DeploymentService;
 
 @SpringBootApplication
 public class CatalogItemsVmwareFinalTaskApplication {
@@ -36,5 +37,5 @@ public class CatalogItemsVmwareFinalTaskApplication {
 	 public HttpPostEntity httpPostEntity() {
 		 return new HttpPostEntity();
 	 }
-
+	 
 }

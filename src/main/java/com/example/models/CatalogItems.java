@@ -1,5 +1,6 @@
 package com.example.models;
 
+import java.util.Collection;
 import java.util.List;
 
 public class CatalogItems {
@@ -10,8 +11,15 @@ public class CatalogItems {
 	Type type;
 	String iconId;
 	Projects[] projects;
+	VersionsList versions;
 
 	
+	public List<Versions>  getVersions() {
+		return versions.getContent();
+	}
+	public void setVersions(VersionsList  versionsList) {
+		this.versions = versionsList;
+	}
 	public Projects[] getProjects() {
 		return projects;
 	}

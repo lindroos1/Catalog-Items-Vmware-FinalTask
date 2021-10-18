@@ -67,10 +67,6 @@ public class Controller {
 		return s.getDeployment(url).getContent();
 	}
 	
-	@GetMapping("GetVersions")
-	public List<Versions> getVersions(@RequestParam String id){
-		String url = "https://api.staging.symphony-dev.com/catalog/api/items/" + id + "/versions";
-		return s.getVersions(url).getContent();
-	}
+	
 
 }

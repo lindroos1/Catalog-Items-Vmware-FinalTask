@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 import com.example.demo.entity.HttpCustomHeaders;
 import com.example.demo.entity.HttpGetEntity;
 import com.example.demo.entity.HttpPostEntity;
-import com.example.helpers.InputConverter;
 import com.example.models.CatalogItems;
 import com.example.models.CatalogItemsList;
 import com.example.models.Deployment;
@@ -48,8 +47,17 @@ public class CatalogItemsService {
 	@ResponseBody
 	public CatalogItemsList getCatalog(String url) throws RestClientException {
 		getEntity.setHeaders(customHeaders);
-		return restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(),
+		CatalogItemsList catalogitemList =  restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(),
 				CatalogItemsList.class).getBody();
+		
+		for(int i = 0; i < catalogitemList.getContent().size(); i++) {
+			String urrl = "https://api.staging.symphony-dev.com/catalog/api/items/" +
+					catalogitemList.getContent().get(i).getId()+ "/versions";
+			catalogitemList.getContent().get(i).setVersions(restTemplate.exchange(urrl, HttpMethod.GET ,getEntity.getEntity(),
+					VersionsList.class).getBody());
+		}
+		
+		return catalogitemList;
 	}
 	
 	@ResponseBody
@@ -57,6 +65,7 @@ public class CatalogItemsService {
 		getEntity.setHeaders(customHeaders);
 		  var ans = restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(),
 				CatalogItems.class).getBody();
+		  
 		  
 		 return ans;
 	}	
@@ -98,9 +107,4 @@ public class CatalogItemsService {
 				DeploymentsList.class).getBody();
 	}
 	
-	public VersionsList getVersions(String url) {
-		getEntity.setHeaders(customHeaders);
-		return restTemplate.exchange(url, HttpMethod.GET ,getEntity.getEntity(),
-				VersionsList.class).getBody();
-	}
 }
