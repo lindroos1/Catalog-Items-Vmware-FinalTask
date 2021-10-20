@@ -1,14 +1,16 @@
 package com.example.demo.services;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.entity.HttpCustomHeaders;
 import com.example.demo.entity.HttpGetEntity;
 import com.example.demo.entity.HttpPostEntity;
-import com.example.models.Deployment;
-import com.example.models.NoInputDeployment;
+import com.example.models.deployments.Deployment;
+import com.example.models.deployments.DeploymentsList;
+import com.example.models.deployments.NoInputDeployment;
 import com.google.gson.JsonObject;
 
 
@@ -28,7 +30,7 @@ public class DeploymentService {
 		this.postEntity = postEntity;
 	}
 
-	  public String DeploySimpleCatalog(String url, NoInputDeployment noInputDeployment) {
+	  public ResponseEntity<String> DeploySimpleCatalog(String url, NoInputDeployment noInputDeployment) {
 	  
 			  postEntity.setHeaders(customHeaders);
 			 
@@ -44,8 +46,20 @@ public class DeploymentService {
 			  postEntity.setBody(body);
 			  
 			  return restTemplate.exchange(url, HttpMethod.POST, postEntity.getEntity(),
-			  String.class).getBody();
+			  String.class);
 			 
+	  }
+	  
+	  public DeploymentsList getDeployment(String url ) {
+			getEntity.setHeaders(customHeaders);
+			return restTemplate.exchange(url, HttpMethod.GET ,getEntity.getEntity(),
+					DeploymentsList.class).getBody();
+		}
+		
+	  public  ResponseEntity<String> getStatus(String url, String deploymentId){
+		  getEntity.setHeaders(customHeaders);
+		  return restTemplate.exchange(url, HttpMethod.GET, getEntity.getEntity(),
+				  String.class);
 	  }
 	 
 }

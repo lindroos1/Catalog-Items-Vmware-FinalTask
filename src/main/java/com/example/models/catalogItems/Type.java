@@ -1,5 +1,10 @@
-package com.example.models;
+package com.example.models.catalogItems;
 
+
+/*
+ * Wrapper class so we can get name of the template associated with that catalog item 
+ * "name":"VMware Cloud Templates" - for example
+ */
 public class Type {
 
 	String id;

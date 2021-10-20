@@ -1,4 +1,4 @@
-package com.example.models;
+package com.example.models.deployments;
 
 public class NoInputDeployment {
 	String id;

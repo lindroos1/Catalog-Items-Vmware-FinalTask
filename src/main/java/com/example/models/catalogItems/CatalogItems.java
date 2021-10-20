@@ -1,4 +1,4 @@
-package com.example.models;
+package com.example.models.catalogItems;
 
 import java.util.Collection;
 import java.util.List;
